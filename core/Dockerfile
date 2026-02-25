@@ -6,9 +6,9 @@ libfreetype6-dev
 zip 
 unzip 
 git 
-curl 
-&& docker-php-ext-configure gd --with-freetype --with-jpeg 
-&& docker-php-ext-install pdo_mysql bcmath gd
+curl
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+RUN docker-php-ext-install pdo_mysql bcmath gd
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 COPY . .
