@@ -1,13 +1,9 @@
-FROM php:8.1-apache
-RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev zip unzip git curl
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN docker-php-ext-install pdo_mysql bcmath gd
-RUN a2dismod mpm_event || true
-RUN a2enmod rewrite
+FROM dunglas/frankenphp:php8.1
+RUN install-php-extensions pdo_mysql bcmath gd
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-WORKDIR /var/www/html
+WORKDIR /app
 COPY . .
-WORKDIR /var/www/html/core
+WORKDIR /app/core
 RUN composer install --no-dev --optimize-autoloader --no-scripts
-RUN chown -R www-data:www-data /var/www/html
+ENV SERVER_ROOT=/app/core/public
 EXPOSE 80
