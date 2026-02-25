@@ -5,6 +5,7 @@ RUN docker-php-ext-install pdo_mysql bcmath gd
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 COPY . .
+WORKDIR /var/www/html/core
 RUN composer install --no-dev --optimize-autoloader
 RUN chown -R www-data:www-data /var/www/html
 EXPOSE 80
